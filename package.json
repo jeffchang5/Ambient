@@ -30,7 +30,8 @@
   },
   "dependencies": {
     "jquery": "^2.2.3",
-    "kickstart-assemble": "onenorth/kickstart-assemble#master"
+    "kickstart-assemble": "onenorth/kickstart-assemble#master",
+    "knockout": "^3.4.0"
   },
   "devDependencies": {
     "browser-sync": "^2.8.0",
