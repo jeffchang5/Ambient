@@ -91,6 +91,12 @@ module.exports = {
       entries: srcAssetsDir + '/js/vendor.js',
       dest: destAssetsDir + '/js', 
       outputName: 'vendor.bundle.js'
+    },
+    {
+      name: 'audiotools',
+      entries: srcAssetsDir + '/js/audiotools.js',
+      dest: destAssetsDir + '/js', 
+      outputName: 'audiotools.bundle.js'
     }
 
     
