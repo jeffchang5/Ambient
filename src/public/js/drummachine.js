@@ -1,6 +1,7 @@
 // https://raw.githubusercontent.com/cwilso/MIDIDrums/master/js/drummachine.js
 
-
+//midi stuff to deal with later
+var instrumentActive = [true,true,true,true,true,true];
 
 
 // Events
@@ -154,14 +155,14 @@ Kit.prototype.load = function() {
         
     this.startedLoading = true;
         
-    var pathName = this.pathName();
+    var pathName = '/public/samples/kick-f.wav'
 
-    var kickPath = pathName + "kick.wav";
-    var snarePath = pathName + "snare.wav";
-    var hihatPath = pathName + "hihat.wav";
-    var tom1Path = pathName + "tom1.wav";
-    var tom2Path = pathName + "tom2.wav";
-    var tom3Path = pathName + "tom3.wav";
+    var kickPath = pathName;
+    var snarePath = pathName;
+    var hihatPath = pathName;
+    var tom1Path = pathName;
+    var tom2Path = pathName;
+    var tom3Path = pathName;
 
     this.loadSample(0, kickPath, false);
     this.loadSample(1, snarePath, false);
@@ -207,26 +208,26 @@ Kit.prototype.loadSample = function(sampleID, url, mixToMono) {
 var impulseResponseInfoList = [
     // Impulse responses - each one represents a unique linear effect.
     {"name":"No Effect", "url":"undefined", "dryMix":1, "wetMix":0},
-    {"name":"Spreader 2", "url":"impulse-responses/noise-spreader1.wav",        "dryMix":1, "wetMix":1},
-    {"name":"Spring Reverb", "url":"impulse-responses/feedback-spring.wav",     "dryMix":1, "wetMix":1},
-    {"name":"Space Oddity", "url":"impulse-responses/filter-rhythm3.wav",       "dryMix":1, "wetMix":0.7},
-    {"name":"Huge Reverse", "url":"impulse-responses/matrix6-backwards.wav",    "dryMix":0, "wetMix":0.7},
-    {"name":"Telephone Filter", "url":"impulse-responses/filter-telephone.wav", "dryMix":0, "wetMix":1.2},
-    {"name":"Lopass Filter", "url":"impulse-responses/filter-lopass160.wav",    "dryMix":0, "wetMix":0.5},
-    {"name":"Hipass Filter", "url":"impulse-responses/filter-hipass5000.wav",   "dryMix":0, "wetMix":4.0},
-    {"name":"Comb 1", "url":"impulse-responses/comb-saw1.wav",                  "dryMix":0, "wetMix":0.7},
-    {"name":"Comb 2", "url":"impulse-responses/comb-saw2.wav",                  "dryMix":0, "wetMix":1.0},
-    {"name":"Cosmic Ping", "url":"impulse-responses/cosmic-ping-long.wav",      "dryMix":0, "wetMix":0.9},
-    {"name":"Kitchen", "url":"impulse-responses/house-impulses/kitchen-true-stereo.wav", "dryMix":1, "wetMix":1},
-    {"name":"Living Room", "url":"impulse-responses/house-impulses/dining-living-true-stereo.wav", "dryMix":1, "wetMix":1},
-    {"name":"Living-Bedroom", "url":"impulse-responses/house-impulses/living-bedroom-leveled.wav", "dryMix":1, "wetMix":1},
-    {"name":"Dining-Far-Kitchen", "url":"impulse-responses/house-impulses/dining-far-kitchen.wav", "dryMix":1, "wetMix":1},
-    {"name":"Medium Hall 1", "url":"impulse-responses/matrix-reverb2.wav",      "dryMix":1, "wetMix":1},
-    {"name":"Medium Hall 2", "url":"impulse-responses/matrix-reverb3.wav",      "dryMix":1, "wetMix":1},
-    {"name":"Peculiar", "url":"impulse-responses/peculiar-backwards.wav",       "dryMix":1, "wetMix":1},
-    {"name":"Backslap", "url":"impulse-responses/backslap1.wav",                "dryMix":1, "wetMix":1},
-    {"name":"Diffusor", "url":"impulse-responses/diffusor3.wav",                "dryMix":1, "wetMix":1},
-    {"name":"Huge", "url":"impulse-responses/matrix-reverb6.wav",               "dryMix":1, "wetMix":0.7},
+    {"name":"Spreader 2", "url":"public/samples/impulse-responses/noise-spreader1.wav",        "dryMix":1, "wetMix":1},
+    {"name":"Spring Reverb", "url":"public/samples/impulse-responses/feedback-spring.wav",     "dryMix":1, "wetMix":1},
+    {"name":"Space Oddity", "url":"public/samples/impulse-responses/filter-rhythm3.wav",       "dryMix":1, "wetMix":0.7},
+    {"name":"Huge Reverse", "url":"public/samples/impulse-responses/matrix6-backwards.wav",    "dryMix":0, "wetMix":0.7},
+    {"name":"Telephone Filter", "url":"public/samples/impulse-responses/filter-telephone.wav", "dryMix":0, "wetMix":1.2},
+    {"name":"Lopass Filter", "url":"public/samples/impulse-responses/filter-lopass160.wav",    "dryMix":0, "wetMix":0.5},
+    {"name":"Hipass Filter", "url":"public/samples/impulse-responses/filter-hipass5000.wav",   "dryMix":0, "wetMix":4.0},
+    {"name":"Comb 1", "url":"public/samples/impulse-responses/comb-saw1.wav",                  "dryMix":0, "wetMix":0.7},
+    {"name":"Comb 2", "url":"public/samples/impulse-responses/comb-saw2.wav",                  "dryMix":0, "wetMix":1.0},
+    {"name":"Cosmic Ping", "url":"public/samples/impulse-responses/cosmic-ping-long.wav",      "dryMix":0, "wetMix":0.9},
+    {"name":"Kitchen", "url":"public/samples/impulse-responses/house-impulses/kitchen-true-stereo.wav", "dryMix":1, "wetMix":1},
+    {"name":"Living Room", "url":"public/samples/impulse-responses/house-impulses/dining-living-true-stereo.wav", "dryMix":1, "wetMix":1},
+    {"name":"Living-Bedroom", "url":"public/samples/impulse-responses/house-impulses/living-bedroom-leveled.wav", "dryMix":1, "wetMix":1},
+    {"name":"Dining-Far-Kitchen", "url":"public/samples/impulse-responses/house-impulses/dining-far-kitchen.wav", "dryMix":1, "wetMix":1},
+    {"name":"Medium Hall 1", "url":"public/samples/impulse-responses/matrix-reverb2.wav",      "dryMix":1, "wetMix":1},
+    {"name":"Medium Hall 2", "url":"public/samples/impulse-responses/matrix-reverb3.wav",      "dryMix":1, "wetMix":1},
+    {"name":"Peculiar", "url":"public/samples/impulse-responses/peculiar-backwards.wav",       "dryMix":1, "wetMix":1},
+    {"name":"Backslap", "url":"public/samples/impulse-responses/backslap1.wav",                "dryMix":1, "wetMix":1},
+    {"name":"Diffusor", "url":"public/samples/impulse-responses/diffusor3.wav",                "dryMix":1, "wetMix":1},
+    {"name":"Huge", "url":"public/samples/impulse-responses/matrix-reverb6.wav",               "dryMix":1, "wetMix":0.7},
 ]
 
 var impulseResponseList = 0;
@@ -326,7 +327,7 @@ function startLoadingAssets() {
 function demoButtonURL(demoIndex) {
     var n = demoIndex + 1;
     var demoName = "demo" + n;
-    var url = "images/btn_" + demoName + ".png";
+    var url = "public/images/btn_" + demoName + ".png";
     return url;
 }
 
@@ -351,7 +352,7 @@ function showDemoAvailable(demoIndex /* zero-based */) {
 // This gets rid of the loading spinner on the play button.
 function showPlayAvailable() {
     var play = document.getElementById("play");
-    play.src = "images/btn_play.png";
+    play.src = "public/images/btn_play.png";
 }
 
 function init() {
@@ -422,16 +423,10 @@ function init() {
     convolver.connect(effectLevelNode);
 
 
-    var elKitCombo = document.getElementById('kitcombo');
-    elKitCombo.addEventListener("mousedown", handleKitComboMouseDown, true);
-
-    var elEffectCombo = document.getElementById('effectcombo');
-    elEffectCombo.addEventListener("mousedown", handleEffectComboMouseDown, true);
-
     document.body.addEventListener("mousedown", handleBodyMouseDown, true);
 
-    initControls();
-    updateControls();
+ initControls();
+    // updateControls();
 
     var timerWorkerBlob = new Blob([
         "var timeoutID=0;function schedule(){timeoutID=setTimeout(function(){postMessage('schedule'); schedule();},100);} onmessage = function(e) { if (e.data == 'start') { if (!timeoutID) schedule();} else if (e.data == 'stop') {if (timeoutID) clearTimeout(timeoutID); timeoutID=0;};}"]);
@@ -454,42 +449,13 @@ function initControls() {
     makeEffectList();
 
     // sliders
-    document.getElementById('effect_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('tom1_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('tom2_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('tom3_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('hihat_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('snare_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('kick_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    document.getElementById('swing_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
 
-    document.getElementById('effect_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('tom1_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('tom2_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('tom3_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('hihat_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('snare_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('kick_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    document.getElementById('swing_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
 
     // tool buttons
     document.getElementById('play').addEventListener('mousedown', handlePlay, true);
     document.getElementById('stop').addEventListener('mousedown', handleStop, true);
-    document.getElementById('save').addEventListener('mousedown', handleSave, true);
-    document.getElementById('save_ok').addEventListener('mousedown', handleSaveOk, true);
-    document.getElementById('load').addEventListener('mousedown', handleLoad, true);
-    document.getElementById('load_ok').addEventListener('mousedown', handleLoadOk, true);
-    document.getElementById('load_cancel').addEventListener('mousedown', handleLoadCancel, true);
-    document.getElementById('reset').addEventListener('mousedown', handleReset, true);
-    document.getElementById('demo1').addEventListener('mousedown', handleDemoMouseDown, true);
-    document.getElementById('demo2').addEventListener('mousedown', handleDemoMouseDown, true);
-    document.getElementById('demo3').addEventListener('mousedown', handleDemoMouseDown, true);
-    document.getElementById('demo4').addEventListener('mousedown', handleDemoMouseDown, true);
-    document.getElementById('demo5').addEventListener('mousedown', handleDemoMouseDown, true);
 
-    var elBody = document.getElementById('body');
-    elBody.addEventListener('mousemove', handleMouseMove, true);
-    elBody.addEventListener('mouseup', handleMouseUp, true);
+    document.getElementById('reset').addEventListener('mousedown', handleReset, true);
 
     document.getElementById('tempoinc').addEventListener('mousedown', tempoIncrease, true);
     document.getElementById('tempodec').addEventListener('mousedown', tempoDecrease, true);
@@ -501,7 +467,7 @@ function initButtons() {
     for (i = 0; i < loopLength; ++i) {
         for (j = 0; j < kNumInstruments; j++) {
                 elButton = document.getElementById(instruments[j] + '_' + i);
-                elButton.addEventListener("mousedown", handleButtonMouseDown, true);
+              //  elButton.addEventListener("mousedown", handleButtonMouseDown, true);
         }
     }
 }
@@ -636,6 +602,7 @@ function schedule() {
 }
 
 function playDrum(noteNumber, velocity) {
+  debugger;
     switch (noteNumber) {
         case 0x24:
             playNote(currentKit.kickBuffer,  false, 0,0,-2,  0.5, (velocity / 127), kickPitch,  0);
@@ -693,57 +660,6 @@ function handleSliderMouseDown(event) {
     }
 }
 
-function handleSliderDoubleClick(event) {
-    var id = event.target.id;
-    if (id != 'swing_thumb' && id != 'effect_thumb') {
-        mouseCapture = null;
-        sliderSetValue(event.target.id, 0.5);
-        updateControls();
-    }
-}
-
-function handleMouseMove(event) {
-    if (!mouseCapture) return;
-    
-    var elThumb = document.getElementById(mouseCapture);
-    var elTrack = elThumb.parentNode;
-
-    if (mouseCapture != 'swing_thumb') {
-        var thumbH = elThumb.clientHeight;
-        var trackH = elTrack.clientHeight;
-        var travelH = trackH - thumbH;
-
-        var trackY = 0;
-        var el = elTrack;
-        do {
-            trackY += el.offsetTop;
-        } while (el = el.offsetParent);
-
-        var offsetY = Math.max(0, Math.min(travelH, event.pageY - mouseCaptureOffset - trackY));
-        var value = 1.0 - offsetY / travelH;
-        elThumb.style.top = travelH * (1.0 - value) + 'px';
-    } else {
-        var thumbW = elThumb.clientWidth;
-        var trackW = elTrack.clientWidth;
-        var travelW = trackW - thumbW;
-
-        var trackX = 0;
-        var el = elTrack;
-        do {
-            trackX += el.offsetLeft;
-        } while (el = el.offsetParent);
-
-        var offsetX = Math.max(0, Math.min(travelW, event.pageX - mouseCaptureOffset - trackX));
-        var value = offsetX / travelW;
-        elThumb.style.left = travelW * value + 'px';
-    }
-
-    sliderSetValue(mouseCapture, value);
-}
-
-function handleMouseUp() {
-    mouseCapture = null;
-}
 
 function sliderSetValue(slider, value) {
     var pitchRate = Math.pow(2.0, 2.0 * (value - 0.5));
@@ -942,7 +858,7 @@ function setEffect(index) {
 
     setEffectLevel(theBeat);
     sliderSetValue('effect_thumb', theBeat.effectMix);
-    updateControls();
+    // updateControls();
 
     document.getElementById('effectname').innerHTML = impulseResponseInfoList[index].name;
 }
@@ -953,30 +869,6 @@ function setEffectLevel() {
 }
 
 
-function handleDemoMouseDown(event) {
-    var loaded = false;
-    
-    switch(event.target.id) {
-        case 'demo1':
-            loaded = loadBeat(beatDemo[0]);    
-            break;
-        case 'demo2':
-            loaded = loadBeat(beatDemo[1]);    
-            break;
-        case 'demo3':
-            loaded = loadBeat(beatDemo[2]);    
-            break;
-        case 'demo4':
-            loaded = loadBeat(beatDemo[3]);    
-            break;
-        case 'demo5':
-            loaded = loadBeat(beatDemo[4]);    
-            break;
-    }
-    
-    if (loaded)
-        handlePlay();
-}
 
 function handlePlay(event) {
     noteTime = 0.0;
@@ -986,96 +878,21 @@ function handlePlay(event) {
 
     document.getElementById('play').classList.add('playing');
     document.getElementById('stop').classList.add('playing');
-    if (midiOut) {
-        // turn off the play button
-        midiOut.send( [0x80, 3, 32] );
-        // light up the stop button
-        midiOut.send( [0x90, 7, 1] );        
-    }
 }
 
 function handleStop(event) {
     timerWorker.postMessage("stop");
 
     var elOld = document.getElementById('LED_' + (rhythmIndex + 14) % 16);
-    elOld.src = 'images/LED_off.png';
-
-    hideBeat( (rhythmIndex + 14) % 16 );
+    elOld.src = 'public/images/LED_off.png';
 
     rhythmIndex = 0;
 
     document.getElementById('play').classList.remove('playing');
     document.getElementById('stop').classList.remove('playing');
-    if (midiOut) {
-        // light up the play button
-        midiOut.send( [0x90, 3, 32] );
-        // turn off the stop button
-        midiOut.send( [0x80, 7, 1] );
-    }
 }
 
-function handleSave(event) {
-    toggleSaveContainer();
-    var elTextarea = document.getElementById('save_textarea');
-    elTextarea.value = JSON.stringify(theBeat);
-}
 
-function handleSaveOk(event) {
-    toggleSaveContainer();
-}
-
-function handleLoad(event) {
-    toggleLoadContainer();
-}
-
-function handleLoadOk(event) {
-    var elTextarea = document.getElementById('load_textarea');
-    theBeat = JSON.parse(elTextarea.value);
-
-    // Set drumkit
-    currentKit = kits[theBeat.kitIndex];
-    document.getElementById('kitname').innerHTML = kitNamePretty[theBeat.kitIndex];
-
-    // Set effect
-    setEffect(theBeat.effectIndex);
-
-    // Change the volume of the convolution effect.
-    setEffectLevel(theBeat);
-
-    // Apply values from sliders
-    sliderSetValue('effect_thumb', theBeat.effectMix);
-    sliderSetValue('kick_thumb', theBeat.kickPitchVal);
-    sliderSetValue('snare_thumb', theBeat.snarePitchVal);
-    sliderSetValue('hihat_thumb', theBeat.hihatPitchVal);
-    sliderSetValue('tom1_thumb', theBeat.tom1PitchVal);
-    sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
-    sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
-    sliderSetValue('swing_thumb', theBeat.swingFactor);
-
-    // Clear out the text area post-processing
-    elTextarea.value = '';
-
-    toggleLoadContainer();
-    updateControls();
-}
-
-function handleLoadCancel(event) {
-    toggleLoadContainer();
-}
-
-function toggleSaveContainer() {
-    document.getElementById('pad').classList.toggle('active');
-    document.getElementById('params').classList.toggle('active');
-    document.getElementById('tools').classList.toggle('active');
-    document.getElementById('save_container').classList.toggle('active');
-}
-
-function toggleLoadContainer() {
-    document.getElementById('pad').classList.toggle('active');
-    document.getElementById('params').classList.toggle('active');
-    document.getElementById('tools').classList.toggle('active');
-    document.getElementById('load_container').classList.toggle('active');
-}
 
 function handleReset(event) {
     handleStop();
@@ -1093,58 +910,21 @@ function loadBeat(beat) {
     currentKit = kits[theBeat.kitIndex];
     setEffect(theBeat.effectIndex);
 
-    // apply values from sliders
-    sliderSetValue('effect_thumb', theBeat.effectMix);
-    sliderSetValue('kick_thumb', theBeat.kickPitchVal);
-    sliderSetValue('snare_thumb', theBeat.snarePitchVal);
-    sliderSetValue('hihat_thumb', theBeat.hihatPitchVal);
-    sliderSetValue('tom1_thumb', theBeat.tom1PitchVal);
-    sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
-    sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
-    sliderSetValue('swing_thumb', theBeat.swingFactor);
-
-    updateControls();
-    setActiveInstrument(0);
+    // updateControls();
+  //  setActiveInstrument(0);
 
     return true;
 }
 
-function updateControls() {
-    for (i = 0; i < loopLength; ++i) {
-        for (j = 0; j < kNumInstruments; j++) {
-            switch (j) {
-                case 0: notes = theBeat.rhythm1; break;
-                case 1: notes = theBeat.rhythm2; break;
-                case 2: notes = theBeat.rhythm3; break;
-                case 3: notes = theBeat.rhythm4; break;
-                case 4: notes = theBeat.rhythm5; break;
-                case 5: notes = theBeat.rhythm6; break;
-            }
 
-            drawNote(notes[i], i, j);
-        }
-    }
-
-    document.getElementById('kitname').innerHTML = kitNamePretty[theBeat.kitIndex];
-    document.getElementById('effectname').innerHTML = impulseResponseInfoList[theBeat.effectIndex].name;
-    document.getElementById('tempo').innerHTML = theBeat.tempo;
-    sliderSetPosition('swing_thumb', theBeat.swingFactor);
-    sliderSetPosition('effect_thumb', theBeat.effectMix);
-    sliderSetPosition('kick_thumb', theBeat.kickPitchVal);
-    sliderSetPosition('snare_thumb', theBeat.snarePitchVal);
-    sliderSetPosition('hihat_thumb', theBeat.hihatPitchVal);
-    sliderSetPosition('tom1_thumb', theBeat.tom1PitchVal);        
-    sliderSetPosition('tom2_thumb', theBeat.tom2PitchVal);
-    sliderSetPosition('tom3_thumb', theBeat.tom3PitchVal);
-}
 
 
 function drawNote(draw, xindex, yindex) {    
     var elButton = document.getElementById(instruments[yindex] + '_' + xindex);
     switch (draw) {
-        case 0: elButton.src = 'images/button_off.png'; break;
-        case 1: elButton.src = 'images/button_half.png'; break;
-        case 2: elButton.src = 'images/button_on.png'; break;
+        case 0: elButton.src = 'public/images/button_off.png'; break;
+        case 1: elButton.src = 'public/images/button_half.png'; break;
+        case 2: elButton.src = 'public/images/button_on.png'; break;
     }
 }
 
@@ -1154,11 +934,12 @@ function drawPlayhead(xindex) {
     var elNew = document.getElementById('LED_' + xindex);
     var elOld = document.getElementById('LED_' + lastIndex);
     
-    elNew.src = 'images/LED_on.png';
-    elOld.src = 'images/LED_off.png';
+    elNew.src = 'public/images/LED_on.png';
+    elOld.src = 'public/images/LED_off.png';
 
-    hideBeat( lastIndex );
-    showBeat( xindex );
+//defined in midi
+  //  hideBeat( lastIndex );
+  //  showBeat( xindex );
 }
 
 function filterFrequencyFromCutoff( cutoff ) {
