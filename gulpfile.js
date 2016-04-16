@@ -119,7 +119,7 @@ gulp.task('copy:extras', function () {
 });
 
 gulp.task('copy:samples', function () {
-    return gulp.src('./src/public/samples/**/*.wav')
+    return gulp.src('./src/public/samples/**/*.*')
         .pipe(gulp.dest(config.dest.samples));
 });
 
