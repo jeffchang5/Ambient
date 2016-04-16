@@ -118,6 +118,11 @@ gulp.task('copy:extras', function () {
         .pipe(gulp.dest(config.dest.base));
 });
 
+gulp.task('copy:samples', function () {
+    return gulp.src('./src/public/samples/**/*.wav')
+        .pipe(gulp.dest(config.dest.samples));
+});
+
 gulp.task('compile:templates', function(done) {
     var options = {
         assets: config.dest.assets,
@@ -191,7 +196,7 @@ gulp.task('perf', ['test:performance']);
 // production build task
 gulp.task('build:production', ['clean'], function (cb) {
     plugins.sequence(
-        ['fonts', 'images', 'styles', 'scripts', 'copy:extras'],
+        ['fonts', 'images', 'styles', 'scripts', 'copy:extras', 'copy:samples'],
         ['compile:templates'],
         done
     );
@@ -199,7 +204,7 @@ gulp.task('build:production', ['clean'], function (cb) {
 
 gulp.task('build', ['clean'], function(done) {
     plugins.sequence(
-        ['fonts', 'images', 'styles', 'scripts', 'copy:extras'],
+        ['fonts', 'images', 'styles', 'scripts', 'copy:extras', 'copy:samples'],
         ['compile:templates'],
         ['compile:styleguide'],
         ['browserSync', 'watch'],

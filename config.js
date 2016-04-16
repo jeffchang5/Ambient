@@ -28,7 +28,8 @@ module.exports = {
     scripts: srcAssetsDir + '/js/**/*.{js,jsx}',
     styles: srcAssetsDir + '/scss/**/*.{sass,scss}',
     images: srcAssetsDir + '/images/**/*.{gif,jpg,jpeg,png,svg,tiff}',
-    fonts: srcAssetsDir + '/fonts/**/*'
+    fonts: srcAssetsDir + '/fonts/**/*',
+    samples: srcAssetsDir + '/samples/**/*'
   },
 
   dest: {
@@ -37,7 +38,8 @@ module.exports = {
     scripts: destAssetsDir + '/js',
     styles: destAssetsDir + '/css',
     images: destAssetsDir + '/images',
-    fonts: destAssetsDir + '/fonts'
+    fonts: destAssetsDir + '/fonts',
+    samples: destAssetsDir + '/samples'
   },
 
   images: {
