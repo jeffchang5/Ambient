@@ -1,5 +1,5 @@
 $max-width: 75em; // 1200px / 16px
-
+@import 'colors';
 $a-tags: 'a, a:active, a:hover';
 $a-tags-hover: 'a:active, a:hover';
 
@@ -11,16 +11,17 @@ $a-tags-hover: 'a:active, a:hover';
 #{$a-tags-hover} {
     // color: mix(map-get($colors, lightblue), map-get($colors, dark), 95%);
 }
-
 html,
 body {
     height: 100%;
+    background-color: #F2AAAA;
 }
 
 body {
     max-width: $max-width;
     margin: auto;
     line-height: 1.4;
+
 }
 
 p {
