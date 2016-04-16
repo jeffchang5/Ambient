@@ -102,7 +102,7 @@ module.exports = {
         '/styleguide': 'styleguide'
       }
     },
-    startPath: 'home.html',
+    startPath: '/',
     snippetOptions: {
       ignorePaths: ['styleguide', 'styleguide/*.html']
     },
