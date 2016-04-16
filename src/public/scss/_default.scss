@@ -17,24 +17,22 @@ body {
     background-color: #F2AAAA;
 }
 
-body {
-    max-width: $max-width;
-    margin: auto;
-    line-height: 1.4;
+
+
+.page {
+    position: absolute;
+    padding-top:50px;
+    width:100%;
 
 }
-
-p {
-    margin-bottom: $default-spacing;
-    margin-top: 0;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
+.playbutton {
+    color:white;
+    background-color: transparent;
+    width: 100px;
+    border-width: 2px;
+    border-color: #FFFFFF;
+    border-style: solid;
 }
-
-[role="main"] {
-    padding: 1em;
-    overflow: hidden;
+.glyphicon-play {
+    color: #FFF;
 }
-
