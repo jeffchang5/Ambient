@@ -47,7 +47,7 @@ function coolStuff() {
 }
 
 function makeSound(){
-        window.director.start;
+        window.director.start();
         var context = window.metadata.audioContext;
         
         
