@@ -31,6 +31,8 @@ var Sequencer = function(loader) {
       this.gainNodes[i] = this.loader.ctx.createGain();
       this.sources[i] =  this.loader.ctx.createBufferSource();
       this.panNodes[i] = this.loader.ctx.createStereoPanner();
+      this.panNodes[i].pan.value = (Math.random()*2 -1);
+      
       this.sources[i].buffer = this.loader.response[i];
 			this.sources[i].connect(this.gainNodes[i]);
 			this.gainNodes[i].connect(this.panNodes[i]);
@@ -40,13 +42,15 @@ var Sequencer = function(loader) {
 };
   
   
-  this.play = function() {
+  this.play = function(scheduledTime) {
+    if(typeof scheduledTime === 'undefined') scheduledTime = 0;
+    
     console.log('play ' + self.currentBeat);
     self.initBuffers();
     
     for (var i=0; i<self.numSamples; i++) {
       if( window.metadata.sequence[i][self.currentBeat] ) {
-        self.sources[i].start(0,0);
+        self.sources[i].start(scheduledTime);
       }
     }
     
