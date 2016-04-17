@@ -39,6 +39,7 @@ body {
 
 
 .aesthetic {
+  position: relative;
   text-align: center;
   cursor: pointer;
   height: auto;
@@ -52,3 +53,21 @@ body {
   margin: auto; 
 }
 
+.overlay-img {
+  position: absolute;
+  top:1vh;
+  left:40vw;
+  height: 20vh;
+  opacity: .4;
+  border-radius: 50%;
+  -webkit-animation: pulsate 15s ease-out;
+  -webkit-animation-iteration-count: infinite; 
+  opacity: 0.0;
+}
+
+
+@-webkit-keyframes pulsate {
+0% {-webkit-transform: scale(1.02, 1.06); opacity: 0.4;}
+50% {-webkit-transform: scale(1.00, 1.0); opacity: 0.1;}
+100% {-webkit-transform: scale(1.02, 1.06); opacity: 0.4;}
+}
