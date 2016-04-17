@@ -36,7 +36,7 @@ var Sequencer = function(loader) {
       this.sources[i] =  this.loader.ctx.createBufferSource();
       this.panNodes[i] = this.loader.ctx.createStereoPanner();
       this.panNodes[i].pan.value = (Math.random()*2 -1);
-      this.gainNodes[i].gain.value = 40;
+      this.gainNodes[i].gain.value = 0.2;
       
       this.sources[i].buffer = this.loader.response[i];
 			this.sources[i].connect(this.gainNodes[i]);

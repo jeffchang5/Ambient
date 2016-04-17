@@ -17,9 +17,12 @@ var Director = function() {
   }
   
   this.changeRhythm = function() {
-      self.changeRhythmNotes();
+      // self.changeRhythmNotes();
       setTimeout(self.changeRhythm, self.randomInterval(2000, 15000));
+      // self.noiseNode.stop();
   }
+
+
   
   this.changeNoise = function() {
     //have to set it first because ramp is broken? 
@@ -61,6 +64,7 @@ var Director = function() {
     noisePanNode.connect(window.metadata.audioContext.destination);
     
     noiseNode.start(0);
+    noiseNode.stop(10);
     }
   
   this.start = function() {

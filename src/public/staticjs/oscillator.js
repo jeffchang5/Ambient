@@ -49,10 +49,10 @@ var chords =
     [startinvals3, chordprogression3, majorminor3],
     [startinvals4, chordprogression4, majorminor4]];
 
-var minorchords = [
-[startinvals6, minorprogression, minorminor],
-[startinvals7, minorprogression, minorminor],
-[startinvals3, chordprogression3, majorminor3]]
+var minorchords = 
+    [[startinvals6, minorprogression, minorminor],
+    [startinvals7, minorprogression, minorminor],
+    [startinvals3, chordprogression3, majorminor3]];
 
 
 var musicstop = false;
@@ -76,7 +76,7 @@ function selectTweet(k){
 
 function makeSound(){ 
     window.director.start();
-    context = window.metadata.audioContext;
+    var context = window.metadata.audioContext;
         
         // postMessage(i);
 
@@ -87,7 +87,8 @@ function makeSound(){
         var curmajorminor = curchordprog[2];
     }
     else{
-        var curchordprog = minorchords[Math.floor(Math.random()*minorchords.length)];
+        var curchordprog = chords[Math.floor(Math.random()*chords.length)];
+        // var curchordprog = minorchords[Math.floor(Math.random()*minorchords.length)];
         var curmajorminor = curchordprog[2];
     }
     
@@ -100,6 +101,7 @@ function makeSound(){
         tempval = []
         var startingnnote = Math.floor(Math.random()*12);
         curchordprog[0][k] +=startingnnote;
+        console.log(curchordprog[1]);
         for (k2 = 0; k2 < curchordprog[1][k].length; k2 ++){
             
             // curchordprog[0][k][k2] += startingnnote;
@@ -217,9 +219,9 @@ function makeSound(){
                     for (inner = 0; inner < 2; inner ++){
 
 
-                        var distortion = context.createWaveShaper();
-                        distortion.curve = makeDistortionCurve(100);
-                        distortion.oversample = '4x';
+                        // var distortion = context.createWaveShaper();
+                        // distortion.curve = makeDistortionCurve(10);
+                        // distortion.oversample = '4x';
                         var nodes = {};
                         nodes.filter = context.createBiquadFilter();
                         nodes.convolver = context.createConvolver();
@@ -240,14 +242,14 @@ function makeSound(){
                       //  oscillator.connect(nodes.filter);
                     //    oscillator.connect(compressor);
 												
-                        oscillator.connect(distortion);
+                        // oscillator.connect(distortion);
 													
 													//also give dry signal
-													var volume2 = context.createGain();
-	                        volume2.gain.value= .2;
+													// var volume2 = context.createGain();
+	            //             volume2.gain.value= .01;
 													
-													oscillator.connect(volume2);
-													volume2.connect(context.destination);
+													// oscillator.connect(volume2);
+													// volume2.connect(context.destination);
 												
                         //nodes.filter.type = "highpass";
                       //  nodes.filter.frequency.value = oscillator.frequency.value+5;
@@ -255,7 +257,7 @@ function makeSound(){
                       // /  oscillator.connect(nodes.filter);
                       //  oscillator.connect(nodes.panner);
 
-                        nodes.volume.gain.value = 0.2;
+                        nodes.volume.gain.value = 0.15;
                       //  nodes.filter.connect(nodes.volume);
 												
 												nodes.panner.connect(nodes.volume);
@@ -280,9 +282,9 @@ function makeSound(){
                     // break;
                 }
                 else{
-                    var distortion = context.createWaveShaper();
-                distortion.curve = makeDistortionCurve(100);
-                distortion.oversample = '4x';
+                //     var distortion = context.createWaveShaper();
+                // distortion.curve = makeDistortionCurve(100);
+                // distortion.oversample = '4x';
                 var nodes = {};
                 nodes.filter = context.createBiquadFilter();
                 nodes.convolver = context.createConvolver();
@@ -296,13 +298,13 @@ function makeSound(){
                 console.log(tempval);
 
                 oscillator.frequency.value = tempval[1];
-                nodes.panner.setVelocity(-5, -5, -5);
+                // nodes.panner.setVelocity(-5, -5, -5);
                 // oscillator..value = 50;
                 oscillator.type = "sine";
                 // var biquadFilter = context.createBiquadFilter();
                 oscillator.connect(nodes.filter);
                 oscillator.connect(compressor);
-                oscillator.connect(distortion);
+                // oscillator.connect(distortion);
 								;
                 nodes.filter.type = "highpass";
                 nodes.filter.frequency.value = oscillator.frequency.value+5;
@@ -310,10 +312,10 @@ function makeSound(){
 								//dont care
                 	oscillator.connect(nodes.convolver);
                 	oscillator.connect(nodes.filter);
-                distortion.connect(nodes.panner);
-								nodes.panner.connect(context.destination);
+                // distortion.connect(nodes.panner);
+								// nodes.panner.connect(context.destination);
 
-                nodes.volume.gain.value = 0.40;
+                nodes.volume.gain.value = 0.2;
                 nodes.filter.connect(nodes.volume);
                 // biquadFilter.connect(gainNode);
                 // biquadFilter.type = "lowshelf";
@@ -337,6 +339,7 @@ function makeSound(){
                 
             }
             j ++;
+            j == 0;
             break;
         }
 
@@ -377,10 +380,10 @@ function returnNotes(major, starting, previous){
         }
     }
     weight = 0.15;
-    singordouble = Math.floor(Math.random()*8);
+    singordouble = Math.floor(Math.random()*5);
     if (singordouble){
         val01 = Math.random();
-        values = Math.floor(Math.random()*(tempval.length+3));
+        values = Math.floor(Math.random()*(tempval.length*2+3));
         if (val01 < 0.4 * weight){
             if (previous <= 0){
                 return [previous, tempval[previous]];
@@ -421,7 +424,7 @@ function returnNotes(major, starting, previous){
         else{
             toincdec = -1;
         }
-        values = Math.floor(Math.random()*(tempval.length+3));
+        values = Math.floor(Math.random()*(tempval.length*2+3));
         values2 = Math.floor(Math.random()*(tempval.length+3));
         if (val01 < 0.4 * weight){
             if (previous <= 0){
