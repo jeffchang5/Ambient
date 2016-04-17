@@ -3,6 +3,113 @@ var a = 440;
 var lowNote = 261.63; // C4
 var highNote = 493.88; // B4
 var context = null;
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(50, $(window).width() / $(window).height(), 1, 1000);
+var renderer = new THREE.WebGLRenderer();
+var cyl = new Array();
+var controls;
+var array = new Array();
+var boost = 0;
+
+document.body.appendChild(renderer.domElement);
+var i = 0;
+for(var x = 0; x < 30; x += 2) {
+    var j = 0;
+    cyl[i] = new Array();
+    for(var y = 0; y < 30; y += 2) {
+        var geometry = new THREE.CylinderGeometry(2, 2, 2);
+        
+        var material = new THREE.MeshPhongMaterial({
+            color: randomFairColor(),
+            ambient: 0x808080,
+            specular: 0xffffff,
+            shininess: 20,
+            reflectivity: 5.5 
+        });
+        
+        cyl[i][j] = new THREE.Mesh(geometry, material);
+        cyl[i][j].position = new THREE.Vector3(x, y, 0);
+        
+        scene.add(cyl[i][j]);
+        j++;
+    }
+    i++;
+}
+var interval = window.setInterval(function() {
+    if($('#loading_dots').text().length < 3) {
+        $('#loading_dots').text($('#loading_dots').text() + '.');
+    }
+    else {
+        $('#loading_dots').text('');
+    }
+}, 500);
+var light = new THREE.AmbientLight(0x505050);
+scene.add(light);
+
+var directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+directionalLight.position.set(0, 1, 1);
+scene.add(directionalLight);
+
+directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+directionalLight.position.set(1, 1, 0);
+scene.add(directionalLight);
+
+
+directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+directionalLight.position.set(0, -1, -1);
+scene.add(directionalLight);
+
+directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
+directionalLight.position.set(-1, -1, 0);
+scene.add(directionalLight);
+
+camera.position.z = 0;
+camera.position.x = 0;
+camera.position.y = 50;
+
+controls = new THREE.OrbitControls(camera);
+controls.addEventListener('change', render);
+
+for(var i = 0; i < 7; i++) {
+    controls.pan(new THREE.Vector3( 1, 0, 0 ));
+    controls.pan(new THREE.Vector3( 0, 1, 0 ));
+}
+
+var render = function () {
+
+    if(typeof array === 'object' && array.length > 0) {
+        var k = 0;
+        for(var i = 0; i < cyl.length; i++) {
+            for(var j = 0; j < cyl[i].length; j++) {
+                var scale = (array[k] + boost) / 30;
+                if (scale <= cyl[i][j].scale.y) scale = scale;
+                cyl[i][j].scale.y = (scale < 1 ? 1 : scale);
+                cyl[i][j].scale.z = -scale ;
+                cyl[i][j].scale.x = 25/scale; //(scale < 1 ? 1 : scale);
+
+                k += (k < array.length ? 1 : 0);
+            }
+        }
+    }
+
+    requestAnimationFrame(render);
+    controls.update();
+    renderer.render(scene, camera);
+    //setTimeout(testLoop,1000);
+};
+
+render();
+renderer.setSize($(window).width(), $(window).height());
+
+function randomFairColor() {
+    var min = 64;
+    var max = 224;
+    var r = (Math.floor(Math.random() * (max - min + 1)) + min) * 65536;
+    var g = (Math.floor(Math.random() * (max - min + 1)) + min) * 256;
+    var b = (Math.floor(Math.random() * (max - min + 1)) + min);
+    return r + g + b;
+}
+
 
 
 // console.log(midi);
@@ -44,6 +151,35 @@ var chords =
 
 var musicstop = false;
 
+context = window.metadata.audioContext
+        
+        // postMessage(i);
+        
+        
+var freqtotal = [];
+var curchordprog = chords[Math.floor(Math.random()*chords.length)];
+var curmajorminor = curchordprog[2];
+
+// var startingnnote = Math.floor(Math.random()*12);
+// curmajorminor.push();
+// console.log("what");
+// console.log(curchordprog);
+for (k = 0; k < curchordprog[0].length; k ++){
+    tempval = []
+    var startingnnote = Math.floor(Math.random()*12);
+    curchordprog[0][k] +=startingnnote;
+    for (k2 = 0; k2 < curchordprog[1][k].length; k2 ++){
+        
+        // curchordprog[0][k][k2] += startingnnote;
+        // console.log(midi[curchordprog[1][k][k2]+48+curchordprog[0][k]]);
+        tempval.push(midi[curchordprog[1][k][k2]+32+curchordprog[0][k]]);
+    }
+    freqtotal.push(tempval);   
+}
+console.log(freqtotal);
+quickness = 2.5;
+j=0;
+
 function coolStuff() {
   // console.log('does this work?');
 }
@@ -53,33 +189,7 @@ function stop(){
 }
 
 function makeSound(){ 
-        window.director.start();
-        context = window.metadata.audioContext
-        
-        // postMessage(i);
-
-        
-    var freqtotal = [];
-    var curchordprog = chords[Math.floor(Math.random()*chords.length)];
-    var curmajorminor = curchordprog[2];
-
-    // var startingnnote = Math.floor(Math.random()*12);
-    // curmajorminor.push();
-    // console.log("what");
-    // console.log(curchordprog);
-    for (k = 0; k < curchordprog[0].length; k ++){
-        tempval = []
-        var startingnnote = Math.floor(Math.random()*12);
-        curchordprog[0][k] +=startingnnote;
-        for (k2 = 0; k2 < curchordprog[1][k].length; k2 ++){
-            
-            // curchordprog[0][k][k2] += startingnnote;
-            // console.log(midi[curchordprog[1][k][k2]+48+curchordprog[0][k]]);
-            tempval.push(midi[curchordprog[1][k][k2]+32+curchordprog[0][k]]);
-        }
-        freqtotal.push(tempval);   
-    }
-    console.log(freqtotal);
+    
     
     // var freqtotal2 = [];
     // for (k = 0; k < curchordprog[0].length; k ++){
@@ -96,20 +206,14 @@ function makeSound(){
     // var freqs3 = [midi[60], midi[63], midi[67], midi[70]];
     // var freqtotal = [freqs, freqs2, freqs3];
 
-    repeat = 0;
+    var repeat = 0;
     
     repeatval = 2;
     checker = true;
     cuval = 0;
-    quickness = 2.5;
+    
     nextMeasureTime = 0;
-    j=0;
-
-    while(j < 24){
-
-        if (musicstop){
-            break;
-        }
+    
 
 
         while(nextMeasureTime < context.currentTime + quickness){
@@ -134,12 +238,13 @@ function makeSound(){
                     cuval = 0;
             }
 
-            // console.log(curfr eq);
+            console.log(curfreq);
             for (x = 0; x < curfreq.length; x ++){
                 var nodes = {};
                 nodes.filter = context.createBiquadFilter();
                 nodes.convolver = context.createConvolver();
                 nodes.volume = context.createGain();
+
                 // var gainNode = context.createGain();
                 var oscillator = context.createOscillator();
                 oscillator.frequency.value = curfreq[x];
@@ -147,9 +252,37 @@ function makeSound(){
                 oscillator.type = "sine"
                 // var biquadFilter = context.createBiquadFilter();
                 oscillator.connect(nodes.filter);
+                // oscillator.connect(analyser);
                 // oscillator.connect(nodes.convolver);
                 nodes.filter.connect(nodes.volume);
-                nodes.volume.gain.value = 0.10                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ;
+                nodes.volume.gain.value = 0.10;
+                var myArrayBuffer = context.createBuffer(2, 22050, 22050);
+                sourceJs = context.createScriptProcessor(2048, 1, 1);
+                sourceJs.buffer = myArrayBuffer;
+                sourceJs.connect(context.destination);
+                analyser = context.createAnalyser();
+                analyser.smoothingTimeConstant = 0.8;
+                analyser.fftSize = 512;
+
+                source = context.createBufferSource();
+                source.buffer = myArrayBuffer;
+                source.loop = false;
+
+                source.connect(analyser);
+                analyser.connect(sourceJs);
+                source.connect(context.destination);
+
+                sourceJs.onaudioprocess = function(e) {
+                    array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    boost = 0;
+                    for (var i = 0; i < array.length; i++) {
+                        boost += array[i];
+                    }
+                    boost = boost / array.length;
+                };
+
+                clearInterval(interval);                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ;
                 // biquadFilter.connect(gainNode);
                 // nodes.filter.type = "lowshelf";
                 // biquadFilter.frequency.value = 100;
@@ -161,6 +294,7 @@ function makeSound(){
                 // oscillator.connect(gainNode);
                 // Connect the oscillator to our speakers
                 oscillator.stop((quickness*(repeat * 24 +j+.7)).toFixed(9));
+                
                 oscs.push(oscillator);
                 // break;
             }
@@ -175,7 +309,7 @@ function makeSound(){
             for (v = 0; v < 4; v ++){
                 var tempval = returnNotes(curmajorminor[curmajmin], curchordprog[0][curmajmin], previousnote);
                 previousnote = tempval[0];
-                if (tempval.length == 3){
+                if (false){
                     for (inner = 0; inner < 2; inner ++){
 
 
@@ -189,6 +323,7 @@ function makeSound(){
                         nodes.panner = context.createPanner();
                         // var gainNode = context.createGain();
                         var oscillator = context.createOscillator();
+
                         // console.log(Math.floor(Math.random()*curmajorminor.length));
                         
                         // console.log("whatwhatwhat");
@@ -207,7 +342,7 @@ function makeSound(){
                         oscillator.connect(nodes.convolver);
                         oscillator.connect(nodes.filter);
                         oscillator.connect(nodes.panner);
-
+                        oscillator.connect(analyser);
                         nodes.volume.gain.value = 0.40;
                         nodes.filter.connect(nodes.volume);
                         // biquadFilter.connect(gainNode);
@@ -231,52 +366,52 @@ function makeSound(){
                 }
                 else{
                     var distortion = context.createWaveShaper();
-                distortion.curve = makeDistortionCurve(100);
-                distortion.oversample = '4x';
-                var nodes = {};
-                nodes.filter = context.createBiquadFilter();
-                nodes.convolver = context.createConvolver();
-                nodes.volume = context.createGain();
-                nodes.panner = context.createPanner();
-                // var gainNode = context.createGain();
-                var oscillator = context.createOscillator();
-                // console.log(Math.floor(Math.random()*curmajorminor.length));
-                
-                // console.log("whatwhatwhat");
-                console.log(tempval);
+                    distortion.curve = makeDistortionCurve(100);
+                    distortion.oversample = '4x';
+                    var nodes = {};
+                    nodes.filter = context.createBiquadFilter();
+                    nodes.convolver = context.createConvolver();
+                    nodes.volume = context.createGain();
+                    nodes.panner = context.createPanner();
+                    // var gainNode = context.createGain();
+                    var oscillator = context.createOscillator();
+                    // console.log(Math.floor(Math.random()*curmajorminor.length));
+                    
+                    // console.log("whatwhatwhat");
+                    console.log(tempval);
 
-                oscillator.frequency.value = tempval[1];
-                nodes.panner.setVelocity(-5, -5, -5);
-                // oscillator..value = 50;
-                oscillator.type = "sine";
-                // var biquadFilter = context.createBiquadFilter();
-                oscillator.connect(nodes.filter);
-                oscillator.connect(compressor);
-                oscillator.connect(distortion);
-                nodes.filter.type = "highpass";
-                nodes.filter.frequency.value = oscillator.frequency.value+5;
-                oscillator.connect(nodes.convolver);
-                oscillator.connect(nodes.filter);
-                oscillator.connect(nodes.panner);
-
-                nodes.volume.gain.value = 0.40;
-                nodes.filter.connect(nodes.volume);
-                // biquadFilter.connect(gainNode);
-                // biquadFilter.type = "lowshelf";
-                // biquadFilter.frequency.value = 100;
-                // biquadFilter.gain.value = 30;                 
-                nodes.volume.connect(context.destination);
-                
-                var scheduledTime = quickness*((repeat * 24) +(4*j+v)/4).toFixed(5);
-                // console.log('time: ' + scheduledTime);
-                oscillator.start(scheduledTime);
-                // console.log(scheduledTime);
-                window.sequencer.play(scheduledTime);
-                // gainNode = context.createGainNode();
-                // gainNode.connect(context.destination);
-                // oscillator.connect(gainNode);
-                // Connect the oscillator to our speakers
-                oscillator.stop(quickness*((repeat * 24) +(4*j+v+0.7)/4).toFixed(5));
+                    oscillator.frequency.value = tempval[1];
+                    nodes.panner.setVelocity(-5, -5, -5);
+                    // oscillator..value = 50;
+                    oscillator.type = "sine";
+                    // var biquadFilter = context.createBiquadFilter();
+                    oscillator.connect(nodes.filter);
+                    oscillator.connect(compressor);
+                    oscillator.connect(distortion);
+                    nodes.filter.type = "highpass";
+                    nodes.filter.frequency.value = oscillator.frequency.value+5;
+                    oscillator.connect(nodes.convolver);
+                    oscillator.connect(nodes.filter);
+                    oscillator.connect(nodes.panner);
+                    oscillator.connect(analyser);
+                    nodes.volume.gain.value = 0.40;
+                    nodes.filter.connect(nodes.volume);
+                    // biquadFilter.connect(gainNode);
+                    // biquadFilter.type = "lowshelf";
+                    // biquadFilter.frequency.value = 100;
+                    // biquadFilter.gain.value = 30;                 
+                    nodes.volume.connect(context.destination);
+                    
+                    var scheduledTime = quickness*((repeat * 24) +(4*j+v)/4).toFixed(5);
+                    // console.log('time: ' + scheduledTime);
+                    oscillator.start(scheduledTime);
+                    // console.log(scheduledTime);
+                    window.sequencer.play(scheduledTime);
+                    // gainNode = context.createGainNode();
+                    // gainNode.connect(context.destination);
+                    // oscillator.connect(gainNode);
+                    // Connect the oscillator to our speakers
+                    oscillator.stop(quickness*((repeat * 24) +(4*j+v+0.7)/4).toFixed(5));
                 // break;
                 }
                 // break;
@@ -293,7 +428,7 @@ function makeSound(){
             //         oscs[i].stop((j+.5)/2);
                     
             // }
-            }
+            
         
             
         
@@ -434,20 +569,14 @@ function makeDistortionCurve(amount) {
   return curve;
 }
 
-// function init(){
-//     context = window.metadata.audioContext;
+function init(){
+    // context = window.metadata.audioContext;
+    
 
+    window.director.start();
+    
 
-//     timerWorker = new Worker("public/staticjs/oscillatorworker.js");
-
-//     timerWorker.onmessage = function(e) {
-//         if (e.data == "tick") {
-//             // console.log("tick!");
-//             makeSound(context);
-//         }
-//         else
-//             console.log("message: " + e.data);
-//     };
-//     timerWorker.postMessage({"interval":'start'});
-// }
+    setInterval(function(){makeSound()}, 2500*curchordprog[0].length);
+    
+}
 
