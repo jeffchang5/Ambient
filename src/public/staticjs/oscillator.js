@@ -10,15 +10,17 @@ for (x = 0.0000; x < 127; x++){
 	console.log(x);
 }
 
+
+
 function coolStuff() {
   console.log('does this work?');
 }
 
-window.makeSound = function (){
+function makeSound(){
         var context = new AudioContext();
         var vals1 = [-1, 4, 7];
-        var vals2 = [-1, 3, 6];
-        var vals3 = [1, 4, 8];
+        var vals2 = [4, 9, 10];
+        var vals3 = [3, 6, 12];
         var vals4 = [1, 4, 9];
         var vals = [vals1, vals2, vals3, vals4];
         var freqtotal = [];
@@ -38,10 +40,14 @@ window.makeSound = function (){
         repeat = 2;
         checker = true;
         cuval = 0;
-        for (j = 0; j < 10; j ++){
+        for (j = 0; j < 8; j ++){
                 var oscs = [];
+                
                 if (checker){
-                        curfreq = freqtotal[j%freqtotal.length];        
+
+                        curfreq = freqtotal[(j/2)%freqtotal.length];
+
+                        console.log((j/2)%freqtotal.length);       
                         checker = false;
                         cuval ++;
                 }
@@ -56,28 +62,36 @@ window.makeSound = function (){
 
                 console.log(curfreq);
                 for (x = 0; x < curfreq.length; x ++){
+                        var gainNode = context.createGain();
                         var oscillator = context.createOscillator();
                         oscillator.frequency.value = curfreq[x];
                         // oscillator..value = 50;
-                        oscillator.type = "triangle"
+                        oscillator.type = "sine"
+                        var biquadFilter = context.createBiquadFilter();
                         oscillator.connect(context.destination);
+                        // biquadFilter.connect(gainNode);
+                        // biquadFilter.type = "lowshelf";
+                        // biquadFilter.frequency.value = 100;
+                        // biquadFilter.gain.value = 30;                 
+                        // gainNode.connect(context.destination);
+                        oscillator.start((j/2).toFixed(5));
                         // gainNode = context.createGainNode();
                         // gainNode.connect(context.destination);
                         // oscillator.connect(gainNode);
                         // Connect the oscillator to our speakers
+                        oscillator.stop(((j+.5)/2).toFixed(5));
                         oscs.push(oscillator);
+                        // break;
                 }
                 // console.log(freqs);
                 console.log(oscs);
                 
-                for (i = 0; i < oscs.length; i ++){
-                        // playSound(oscs[i], 0)
-                        oscs[i].start(j/2);
-                        oscs[i].stop((j+0.4)/2);
-
-                }
+                // for (i = 0; i < oscs.length; i ++){
+                //         oscs[i].stop((j+.5)/2);
+                        
+                // }
         }
-                
+        
         
         
         
