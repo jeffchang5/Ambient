@@ -63,7 +63,29 @@ var Sequencer = function(loader) {
       self.currentBeat = 0;
   };
   
+
+  this.playworker = function(value){
+// context = window.metadata.audioContext;
+
+
+    timerWorker = new Worker("public/staticjs/sequenceworker.js");
+
+    timerWorker.onmessage = function(e) {
+        if (e.data == "tick") {
+            // console.log("tick!");
+            play(value);
+        }
+        else
+            console.log("message: " + e.data);
+    };
+    timerWorker.postMessage({"interval":'start'});
+  }
 };
+
+function init(value){
+    
+}
+
   
   
 //create by loader instead
