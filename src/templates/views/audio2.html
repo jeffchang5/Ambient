@@ -1,0 +1,75 @@
+---
+layout: default-layout
+---
+
+<script src="/public/staticjs/oscillator.js"></script>
+
+<h1>Welcome to the Web Audio API</h1>
+<input class="soundclick" type="button" onclick="makeSound()" value = "chords">
+<canvas id="mycanvas" />
+        
+<body>
+    <script src="public/staticjs/AudioSampleLoader.js"></script>
+    <script src="public/staticjs/loader.js"></script>
+    <script src ="public/staticjs/sequencer.js"></script> 
+    <script src="public/staticjs/build/three.min.js"></script>
+    <script src="public/staticjs/js/controls/FirstPersonControls.js"></script>
+    <script src="public/staticjs/js/controls/PointerLockControls.js"></script>
+    <script src="public/staticjs/js/postprocessing/EffectComposer.js"></script>
+    <script src="public/staticjs/js/postprocessing/RenderPass.js"></script>
+    <script src="public/staticjs/js/postprocessing/ShaderPass.js"></script>
+    <script src="public/staticjs/js/postprocessing/MaskPass.js"></script>
+    <script src="public/staticjs/js/shaders/CopyShader.js"></script>
+    <script src="public/staticjs/js/shaders/ColorCorrectionShader.js"></script>
+    <script src="public/staticjs/js/shaders/VignetteShader.js"></script>
+
+    <script src="public/staticjs/js/MorphAnimMesh.js"></script>
+    <script src="public/staticjs/js/loaders/collada/Animation.js"></script>
+
+    <script src="public/staticjs/js/loaders/sea3d/SEA3D.js"></script>
+    <script src="public/staticjs/js/loaders/sea3d/SEA3DLZMA.js"></script>
+    <script src="public/staticjs/js/loaders/sea3d/SEA3DLoader.js"></script>
+
+    <script src="public/staticjs/js/Detector.js"></script>
+    <script src="public/staticjs/js/libs/stats.min.js"></script>
+
+    <script>   
+    var scene, camera, renderer;
+    var geometry, material, mesh;
+
+
+    init();
+    animate();
+
+    function init() {
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.z = 1000;
+
+    geometry = new THREE.BoxGeometry( 200, 200, 200 );
+    material = new THREE.MeshBasicMaterial( { color: 0xffffff, wireframe: true } );
+
+    mesh = new THREE.Mesh( geometry, material );
+    scene.add( mesh );
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+    document.body.appendChild( renderer.domElement );
+
+    }
+
+    function animate() {
+
+    requestAnimationFrame( animate );
+
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.02;
+
+    renderer.render( scene, camera );
+
+    }   
+</script>
+</body>
