@@ -1,9 +1,8 @@
 window.audioTools = require("./audioTools");
 console.log ("this is a test: " + $(window).width()) ;
 
-audioTools.test();
+// audioTools.test();
 
-// window.audioTools = require("audioTools");
 'use strict';
 
 $('document').ready(function() {
@@ -29,14 +28,7 @@ $('document').ready(function() {
 
 
             //$("#play_button").show();
-window.audioTools = require("audioTools");
 
-audioTools.test();
-
-
-
-// // window.audioTools = require("audioTools");
-// 'use strict';
 // window.sample_array = [];
 // $('document').ready(function() {
 //     var array_of_files = [];
@@ -69,4 +61,3 @@ audioTools.test();
 //
 //
 // });
-// require('./drummachine.js');
