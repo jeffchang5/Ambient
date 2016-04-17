@@ -72,7 +72,7 @@ function stop(){
 
 function makeSound(){ 
     window.director.start();
-    context = window.metadata.audioContext
+    context = window.metadata.audioContext;
         
         // postMessage(i);
 

@@ -13,6 +13,8 @@ $a-tags-hover: 'a:active, a:hover';
 }
 html,
 body {
+  cursor: wait;
+  text-align: center;
   position: relative;
     height: 100%;
     background-color: #F2AAAA;
@@ -26,6 +28,7 @@ body {
     width:100%;
 
 }
+
 .playbutton {
     color:white;
     background-color: transparent;
@@ -34,14 +37,23 @@ body {
     border-color: #FFFFFF;
     border-style: solid;
 }
+
 .glyphicon-play {
     color: #FFF;
 }
 
+.tweets option {
+  text-align: center;
+  } 
+
 .tweets {
-  position: absolute;
+
+  // position: absolute;
+  margin-top: 30vw;
+  
   bottom: 20%;
-  background-color: grey;
+  background-color: #F2AAAA;
+  border: none;
   // color: white;
   font-size: 22px;
   overflow:visible;
