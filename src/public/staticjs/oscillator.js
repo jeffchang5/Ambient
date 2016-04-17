@@ -356,6 +356,7 @@ function makeSound(){
                         oscillator.start(scheduledTime);
                         // console.log(scheduledTime);
                         window.sequencer.play(scheduledTime);
+												window.director.update();
                         // gainNode = context.createGainNode();
                         // gainNode.connect(context.destination);
                         // oscillator.connect(gainNode);
