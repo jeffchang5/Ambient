@@ -11,13 +11,12 @@ for (x = 0.0000; x < 127; x++){
 }
 
 
-
-function coolStuff() {
-  console.log('does this work?');
+function Sound() {
+        this.context = new AudioContext();
 }
 
-function makeSound(){
-        var context = new AudioContext();
+Sound.prototype.makeSound = function (){
+
         var vals1 = [-1, 4, 7];
         var vals2 = [4, 9, 10];
         var vals3 = [3, 6, 12];
