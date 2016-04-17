@@ -47,7 +47,7 @@ function coolStuff() {
 }
 
 function makeSound(){
-        var context = new AudioContext();
+        var context = window.metadata.audioContext;
         
         
         for (repeat = 0; repeat < 5; repeat ++){
@@ -174,13 +174,20 @@ function makeSound(){
                     nodes.filter.frequency.value = oscillator.frequency.value+5;
                     oscillator.connect(nodes.convolver);
                     nodes.filter.connect(nodes.volume);
-                    nodes.volume.gain.value = 0.40 * v/4;
+                    nodes.volume.gain.value = 0.80 * v/4;
                     // biquadFilter.connect(gainNode);
                     // biquadFilter.type = "lowshelf";
                     // biquadFilter.frequency.value = 100;
                     // biquadFilter.gain.value = 30;                 
                     nodes.volume.connect(context.destination);
-                    oscillator.start(quickness*((repeat * 24) +(4*j+v)/4).toFixed(5));
+                    
+                    var scheduledTime = quickness*((repeat * 24) +(4*j+v)/4).toFixed(5);
+                    console.log('time: ' + scheduledTime);
+                    oscillator.start(scheduledTime);
+                    
+                    console.log(scheduledTime);
+                    window.sequencer.play(scheduledTime);
+                    
                     // gainNode = context.createGainNode();
                     // gainNode.connect(context.destination);
                     // oscillator.connect(gainNode);

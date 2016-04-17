@@ -3,6 +3,8 @@
 var Metadata = function() {
   var self = this;
   
+  this.audioContext = new AudioContext();
+  
   this.kyleSamples = [    
     'public/samples/vaporwave/cans-flanged.wav',
     'public/samples/vaporwave/popcorn-snare.wav',

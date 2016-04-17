@@ -35,13 +35,8 @@ AudioSampleLoader.prototype.send = function () {
   "use strict";
   var console = window.console,
     i;
-  if (!this.hasOwnProperty('ctx')) {
-    this.ctx = new window.AudioContext();
-  } else if (!(this.ctx instanceof window.AudioContext)) {
-    //TODO: Post an error, but do not overwrite the variable with a valid context.
-    console.error('AudioSampleLoader: ctx not an instance of AudioContext');
-    return;
-  }
+  
+  this.ctx = window.metadata.audioContext;
     
   if (!this.hasOwnProperty('onload')) {
     console.error('AudioSampleLoader: Callback onload does not exist');
