@@ -70,6 +70,10 @@ function stop(){
     console.log(twitterdata[0]["docSentiment"]["score"]);
 }
 
+function selectTweet(k){
+    mood = twitterdata[k]["docSentiment"]["score"];
+}
+
 function makeSound(){ 
     window.director.start();
     context = window.metadata.audioContext;
@@ -373,10 +377,10 @@ function returnNotes(major, starting, previous){
         }
     }
     weight = 0.15;
-    singordouble = Math.floor(Math.random()*5);
+    singordouble = Math.floor(Math.random()*8);
     if (singordouble){
         val01 = Math.random();
-        values = Math.floor(Math.random()*(tempval.length*2+3));
+        values = Math.floor(Math.random()*(tempval.length+3));
         if (val01 < 0.4 * weight){
             if (previous <= 0){
                 return [previous, tempval[previous]];
@@ -417,8 +421,8 @@ function returnNotes(major, starting, previous){
         else{
             toincdec = -1;
         }
-        values = Math.floor(Math.random()*(tempval.length*2+3));
-        values2 = Math.floor(Math.random()*(tempval.length*2+3));
+        values = Math.floor(Math.random()*(tempval.length+3));
+        values2 = Math.floor(Math.random()*(tempval.length+3));
         if (val01 < 0.4 * weight){
             if (previous <= 0){
                 return [previous + 1, tempval[previous], tempval[previous+1]];
