@@ -38,7 +38,7 @@ var Sequencer = function(loader) {
 			this.gainNodes[i].connect(this.panNodes[i]);
 			this.panNodes[i].connect(this.loader.ctx.destination);
     }
-  console.log("initialized buffers");
+  // console.log("initialized buffers");
 };
   
   
