@@ -10,7 +10,7 @@ for (x = 0.0000; x < 127; x++){
 	console.log(x);
 }
 
-function sound(){
+window.makeSound = function (){
         var context = new AudioContext();
         var vals1 = [-1, 4, 7];
         var vals2 = [-1, 3, 6];
