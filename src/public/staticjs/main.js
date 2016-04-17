@@ -1,11 +1,10 @@
-console.log ("this is a test: " + $(window).width()) ;
-
-
+// window.audioTools = require("audioTools");
 'use strict';
 
 $('document').ready(function() {
     var array_of_files = [];
     var array_of_urls = [];
+    var loader = AudioSampleLoader();
 
 
     $.ajax({
@@ -26,7 +25,14 @@ $('document').ready(function() {
 
 
             //$("#play_button").show();
+window.audioTools = require("audioTools");
 
+audioTools.test();
+
+
+
+// // window.audioTools = require("audioTools");
+// 'use strict';
 // window.sample_array = [];
 // $('document').ready(function() {
 //     var array_of_files = [];
@@ -59,3 +65,4 @@ $('document').ready(function() {
 //
 //
 // });
+// require('./drummachine.js');
