@@ -45,6 +45,7 @@ function nextNote() {
 }
 
 function scheduleNote( beatNumber, time ) {
+  console.log('note scheduled for : ' + time );
     // push the note on the queue, even if we're not playing.
     notesInQueue.push( { note: beatNumber, time: time } );
 
@@ -99,30 +100,30 @@ function resetCanvas (e) {
     window.scrollTo(0,0); 
 }
 
-function draw() {
-    var currentNote = last16thNoteDrawn;
-    var currentTime = audioContext.currentTime;
-
-    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
-        currentNote = notesInQueue[0].note;
-        notesInQueue.splice(0,1);   // remove note from queue
-    }
-
-    // We only need to draw if the note has moved.
-    if (last16thNoteDrawn != currentNote) {
-        var x = Math.floor( canvas.width / 18 );
-        canvasContext.clearRect(0,0,canvas.width, canvas.height); 
-        for (var i=0; i<16; i++) {
-            canvasContext.fillStyle = ( currentNote == i ) ? 
-                ((currentNote%4 === 0)?"red":"blue") : "black";
-            canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
-        }
-        last16thNoteDrawn = currentNote;
-    }
-
-    // set up to draw again
-    requestAnimFrame(draw);
-}
+// function draw() {
+//     var currentNote = last16thNoteDrawn;
+//     var currentTime = audioContext.currentTime;
+// 
+//     while (notesInQueue.length && notesInQueue[0].time < currentTime) {
+//         currentNote = notesInQueue[0].note;
+//         notesInQueue.splice(0,1);   // remove note from queue
+//     }
+// 
+//     // We only need to draw if the note has moved.
+//     if (last16thNoteDrawn != currentNote) {
+//         var x = Math.floor( canvas.width / 18 );
+//         canvasContext.clearRect(0,0,canvas.width, canvas.height); 
+//         for (var i=0; i<16; i++) {
+//             canvasContext.fillStyle = ( currentNote == i ) ? 
+//                 ((currentNote%4 === 0)?"red":"blue") : "black";
+//             canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+//         }
+//         last16thNoteDrawn = currentNote;
+//     }
+// 
+//     // set up to draw again
+//     requestAnimFrame(draw);
+// }
 
 function init(){
     var container = document.createElement( 'div' );
@@ -146,10 +147,10 @@ function init(){
 
     // if we wanted to load audio files, etc., this is where we should do it.
 
-    window.onorientationchange = resetCanvas;
-    window.onresize = resetCanvas;
+    // window.onorientationchange = resetCanvas;
+    // window.onresize = resetCanvas;
 
-    requestAnimFrame(draw);    // start the drawing loop.
+    // requestAnimFrame(draw);    // start the drawing loop.
 
     timerWorker = new Worker("public/staticjs/metronomeworker.js");
 

@@ -17,8 +17,17 @@ var Metadata = function() {
   
   this.samples = [
     'public/samples/bd-01.wav',
+    'public/samples/kick-f.wav',
     'public/samples/cym1.wav',
-    'public/samples/hh-03.wav',
+    'public/samples/hh-01.wav',
+    'public/samples/per07.wav',
+    'public/samples/mac/Startup1.wav',
+    'public/samples/mac/Startup2.wav',
+    'public/samples/impulse-responses/diffusor4.wav',
+    'public/samples/impulse-responses/diffusor1.wav',
+    'public/samples/impulse-responses/echo-chamber.wav',
+    'public/samples/impulse-responses/chorus-feedback.wav',
+    
   ].concat(this.kyleSamples);
   
   this.sequenceLength = 8;
