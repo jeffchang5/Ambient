@@ -4,11 +4,11 @@ var lowNote = 261.63; // C4
   var highNote = 493.88; // B4
 
 
-console.log(midi);
+// console.log(midi);
 for (x = 0.0000; x < 127; x++){
 	midi[x] = (a/32) * (Math.pow(2, (x-9)/12));
-	console.log(midi[x]);
-	console.log(x);
+	// console.log(midi[x]);
+	// console.log(x);
 }
 var majorscale = [0, 2, 4, 5, 7, 9, 11, 12];
 var minorscale = [0, 2, 3, 5, 7, 8, 10, 12];
@@ -43,7 +43,7 @@ var chords =
 
 
 function coolStuff() {
-  console.log('does this work?');
+  // console.log('does this work?');
 }
 
 function makeSound(){
@@ -57,8 +57,8 @@ function makeSound(){
 
             // var startingnnote = Math.floor(Math.random()*12);
             // curmajorminor.push();
-            console.log("what");
-            console.log(curchordprog);
+            // console.log("what");
+            // console.log(curchordprog);
             for (k = 0; k < curchordprog[0].length; k ++){
                 tempval = []
                 var startingnnote = Math.floor(Math.random()*12);
@@ -66,8 +66,8 @@ function makeSound(){
                 for (k2 = 0; k2 < curchordprog[1][k].length; k2 ++){
                     
                     // curchordprog[0][k][k2] += startingnnote;
-                    console.log(midi[curchordprog[1][k][k2]+48+curchordprog[0][k]]);
-                    tempval.push(midi[curchordprog[1][k][k2]+36+curchordprog[0][k]]);
+                    // console.log(midi[curchordprog[1][k][k2]+48+curchordprog[0][k]]);
+                    tempval.push(midi[curchordprog[1][k][k2]+32+curchordprog[0][k]]);
                 }
                 freqtotal.push(tempval);   
             }
@@ -87,13 +87,21 @@ function makeSound(){
             // var freqs2 = [midi[60], midi[64], midi[71], midi[74]];
             // var freqs3 = [midi[60], midi[63], midi[67], midi[70]];
             // var freqtotal = [freqs, freqs2, freqs3];
+
+            
             
             repeatval = 2;
             checker = true;
             cuval = 0;
             quickness = 2.5;
+            nextMeasureTime = 0;
+            j=0;
 
-            for (j = 0; j < 24; j++) {
+            while(j < 24){
+                while(nextMeasureTime < context.currentTime + quickness){
+                    nextMeasureTime += 2.5;
+
+                
                 
                 var oscs = [];
                 
@@ -101,7 +109,7 @@ function makeSound(){
                         curmajmin = (j/2)%curmajorminor.length;
                         curfreq = freqtotal[(j/2)%freqtotal.length];
 
-                        console.log((j/2)%freqtotal.length);       
+                        // console.log((j/2)%freqtotal.length);       
                         checker = false;
                         cuval ++;
                 }
@@ -109,12 +117,12 @@ function makeSound(){
                         cuval ++;
                 }
                 else{
-                        console.log("yoyoyo");
+                        // console.log("yoyoyo");
                         checker = true;
                         cuval = 0;
                 }
 
-                console.log(curfreq);
+                // console.log(curfr eq);
                 for (x = 0; x < curfreq.length; x ++){
                     var nodes = {};
                     nodes.filter = context.createBiquadFilter();
@@ -129,7 +137,7 @@ function makeSound(){
                     oscillator.connect(nodes.filter);
                     // oscillator.connect(nodes.convolver);
                     nodes.filter.connect(nodes.volume);
-                    nodes.volume.gain.value = 0.10;
+                    nodes.volume.gain.value = 0.10                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ;
                     // biquadFilter.connect(gainNode);
                     // nodes.filter.type = "lowshelf";
                     // biquadFilter.frequency.value = 100;
@@ -153,6 +161,12 @@ function makeSound(){
                 compressor.release.value = 0.001;
                 for (v = 0; v < 4; v ++){
                     // break;
+                    var distortion = context.createWaveShaper();
+
+
+
+                    distortion.curve = makeDistortionCurve(30);
+                    distortion.oversample = '4x';
                     var nodes = {};
                     nodes.filter = context.createBiquadFilter();
                     nodes.convolver = context.createConvolver();
@@ -161,8 +175,8 @@ function makeSound(){
                     var oscillator = context.createOscillator();
                     // console.log(Math.floor(Math.random()*curmajorminor.length));
                     var tempval = returnNotes(curmajorminor[curmajmin], curchordprog[0][curmajmin]);
-                    console.log("whatwhatwhat");
-                    console.log(tempval);
+                    // console.log("whatwhatwhat");
+                    // console.log(tempval);
                     oscillator.frequency.value = tempval;
 
                     // oscillator..value = 50;
@@ -170,11 +184,13 @@ function makeSound(){
                     // var biquadFilter = context.createBiquadFilter();
                     oscillator.connect(nodes.filter);
                     oscillator.connect(compressor);
-                    nodes.filter.type = "lowpass";
+                    // oscillator.connect(distortion);
+                    nodes.filter.type = "highpass";
                     nodes.filter.frequency.value = oscillator.frequency.value+5;
                     oscillator.connect(nodes.convolver);
+                    oscillator.connect(nodes.filter);
+                    nodes.volume.gain.value = 0.40;
                     nodes.filter.connect(nodes.volume);
-                    nodes.volume.gain.value = 0.80 * v/4;
                     // biquadFilter.connect(gainNode);
                     // biquadFilter.type = "lowshelf";
                     // biquadFilter.frequency.value = 100;
@@ -182,22 +198,25 @@ function makeSound(){
                     nodes.volume.connect(context.destination);
                     
                     var scheduledTime = quickness*((repeat * 24) +(4*j+v)/4).toFixed(5);
-                    console.log('time: ' + scheduledTime);
+                    // console.log('time: ' + scheduledTime);
                     oscillator.start(scheduledTime);
                     
-                    console.log(scheduledTime);
+                    // console.log(scheduledTime);
                     window.sequencer.play(scheduledTime);
                     
                     // gainNode = context.createGainNode();
                     // gainNode.connect(context.destination);
                     // oscillator.connect(gainNode);
                     // Connect the oscillator to our speakers
-                    oscillator.stop(quickness*((repeat * 24) +(4*j+v+1)/4).toFixed(5));
+                    oscillator.stop(quickness*((repeat * 24) +(4*j+v+0.7)/4).toFixed(5));
+
                     
                     // break;
                 }
+                j ++;
+            }
                 // console.log(freqs);
-                console.log(oscs);
+                // console.log(oscs);
                
                     
                     // for (i = 0; i < oscs.length; i ++){
@@ -223,7 +242,13 @@ function returnNotes(major, starting){
     }
     tempval = [];
     for (k = 0; k < notestopickfrom.length; k++){
-        tempval.push(midi[notestopickfrom[k] + 48 + starting]);
+        if (midi[notestopickfrom[k] + 60 + starting] > 500){
+            tempval.push(midi[notestopickfrom[k] + 44 + starting]);
+        }
+        else{
+            tempval.push(midi[notestopickfrom[k] + 44 + starting]);
+
+        }
     }
     values = Math.floor(Math.random()*(tempval.length*2+3));
     if (values == 0){
@@ -242,4 +267,18 @@ function returnNotes(major, starting){
 
     return tempval[(values - 3)%tempval.length];
     
+}
+
+function makeDistortionCurve(amount) {
+  var k = typeof amount === 'number' ? amount : 50,
+    n_samples = 44100,
+    curve = new Float32Array(n_samples),
+    deg = Math.PI / 180,
+    i = 0,
+    x;
+  for ( ; i < n_samples; ++i ) {
+    x = i * 2 / n_samples - 1;
+    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+  }
+  return curve;
 }
