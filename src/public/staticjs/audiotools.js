@@ -26,3 +26,8 @@ var Clock = function() {
 
 window.audioTools = new AudioTools();
 window.clock = new Clock();
+
+
+function coinFlip() { 
+  return (Math.floor(Math.random() * 2) == 0);
+}
