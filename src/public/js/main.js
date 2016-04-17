@@ -24,8 +24,10 @@ $('document').ready(function() {
 
 
             //$("#play_button").show();
+window.audioTools = require("audioTools");
 
 audioTools.test();
+
 
 
 // // window.audioTools = require("audioTools");
@@ -62,3 +64,4 @@ audioTools.test();
 //
 //
 // });
+// require('./drummachine.js');
