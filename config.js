@@ -29,7 +29,8 @@ module.exports = {
     styles: srcAssetsDir + '/scss/**/*.{sass,scss}',
     images: srcAssetsDir + '/images/**/*.{gif,jpg,jpeg,png,svg,tiff}',
     fonts: srcAssetsDir + '/fonts/**/*',
-    samples: srcAssetsDir + '/samples/**/*'
+    samples: srcAssetsDir + '/samples/**/*',
+    staticjs: srcAssetsDir + '/staticjs/**/*'
   },
 
   dest: {
@@ -39,7 +40,8 @@ module.exports = {
     styles: destAssetsDir + '/css',
     images: destAssetsDir + '/images',
     fonts: destAssetsDir + '/fonts',
-    samples: destAssetsDir + '/samples'
+    samples: destAssetsDir + '/samples',
+    staticjs: destAssetsDir + '/staticjs'
   },
 
   images: {
