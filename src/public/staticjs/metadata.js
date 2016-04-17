@@ -33,7 +33,7 @@ var Metadata = function() {
   this.sequenceLength = 8;
   
   //float 0-1 determines how many notes are picked in the sequencer
-  this.busyFactor = .3;
+  this.busyFactor = .2;
   this.expectedMaxSamplesAtOnce = 5;
   this.playChance = (self.busyFactor * self.expectedMaxSamplesAtOnce ) / this.samples.length;
   console.log('chance : ' + this.playChance);

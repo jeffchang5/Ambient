@@ -19,11 +19,15 @@ var Sequencer = function(loader) {
 	this.gainNodes = [];
 	this.panNodes = [];
   
+  this.drumBusCompressor = this.loader.ctx.createDynamicsCompressor();
+    this.drumBusCompressor.threshold.value = -40;
+    this.drumBusCompressor.knee.value = 40;
+    this.drumBusCompressor.ratio.value = 5;
+    this.drumBusCompressor.reduction.value = -10;
+    this.drumBusCompressor.attack.value = 0;
+    this.drumBusCompressor.release.value = 0.25;
   
-  
-  
-  
-  
+    this.drumBusCompressor.connect(this.loader.ctx.destination);
   
   
   this.initBuffers = function() {
@@ -36,7 +40,7 @@ var Sequencer = function(loader) {
       this.sources[i].buffer = this.loader.response[i];
 			this.sources[i].connect(this.gainNodes[i]);
 			this.gainNodes[i].connect(this.panNodes[i]);
-			this.panNodes[i].connect(this.loader.ctx.destination);
+			this.panNodes[i].connect(self.drumBusCompressor);
     }
   // console.log("initialized buffers");
 };
@@ -59,7 +63,29 @@ var Sequencer = function(loader) {
       self.currentBeat = 0;
   };
   
+
+  this.playworker = function(value){
+// context = window.metadata.audioContext;
+
+
+    timerWorker = new Worker("public/staticjs/sequenceworker.js");
+
+    timerWorker.onmessage = function(e) {
+        if (e.data == "tick") {
+            // console.log("tick!");
+            play(value);
+        }
+        else
+            console.log("message: " + e.data);
+    };
+    timerWorker.postMessage({"interval":'start'});
+  }
 };
+
+function init(value){
+    
+}
+
   
   
 //create by loader instead
