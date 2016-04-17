@@ -101,15 +101,7 @@ module.exports = {
       entries: srcAssetsDir + '/js/audiotools.js',
       dest: destAssetsDir + '/js', 
       outputName: 'audiotools.bundle.js'
-    },
-    {
-      name: 'audiogenerate',
-      entries: srcAssetsDir + '/js/audio.js',
-      dest: destAssetsDir + '/js', 
-      outputName: 'audio.bundle.js'
-    }
-
-    
+    }    
   ],
   browserSync: {
     server: {
