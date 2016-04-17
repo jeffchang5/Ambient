@@ -61,13 +61,13 @@ Sound.prototype.makeSound = function (){
 
                 console.log(curfreq);
                 for (x = 0; x < curfreq.length; x ++){
-                        var gainNode = context.createGain();
-                        var oscillator = context.createOscillator();
+                        var gainNode = this.context.createGain();
+                        var oscillator = this.context.createOscillator();
                         oscillator.frequency.value = curfreq[x];
                         // oscillator..value = 50;
                         oscillator.type = "sine"
-                        var biquadFilter = context.createBiquadFilter();
-                        oscillator.connect(context.destination);
+                        var biquadFilter = this.context.createBiquadFilter();
+                        oscillator.connect(this.context.destination);
                         // biquadFilter.connect(gainNode);
                         // biquadFilter.type = "lowshelf";
                         // biquadFilter.frequency.value = 100;
