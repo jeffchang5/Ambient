@@ -36,6 +36,7 @@ var Sequencer = function(loader) {
       this.sources[i] =  this.loader.ctx.createBufferSource();
       this.panNodes[i] = this.loader.ctx.createStereoPanner();
       this.panNodes[i].pan.value = (Math.random()*2 -1);
+      this.gainNodes[i].gain.value = 40;
       
       this.sources[i].buffer = this.loader.response[i];
 			this.sources[i].connect(this.gainNodes[i]);
@@ -64,22 +65,6 @@ var Sequencer = function(loader) {
   };
   
 
-  this.playworker = function(value){
-// context = window.metadata.audioContext;
-
-
-    timerWorker = new Worker("public/staticjs/sequenceworker.js");
-
-    timerWorker.onmessage = function(e) {
-        if (e.data == "tick") {
-            // console.log("tick!");
-            play(value);
-        }
-        else
-            console.log("message: " + e.data);
-    };
-    timerWorker.postMessage({"interval":'start'});
-  }
 };
 
 function init(value){
