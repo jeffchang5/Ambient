@@ -52,10 +52,12 @@ function stop(){
     musicstop = true;
 }
 
-function makeSound(context){ 
-        // window.director.start;
+function makeSound(){ 
+        window.director.start();
+        context = window.metadata.audioContext
         
         // postMessage(i);
+
         
     var freqtotal = [];
     var curchordprog = chords[Math.floor(Math.random()*chords.length)];
@@ -169,9 +171,66 @@ function makeSound(context){
             compressor.reduction.value = -20;
             compressor.attack.value = 0.001;
             compressor.release.value = 0.001;
+            var previousnote = 0;
             for (v = 0; v < 4; v ++){
-                // break;
-                var distortion = context.createWaveShaper();
+                var tempval = returnNotes(curmajorminor[curmajmin], curchordprog[0][curmajmin], previousnote);
+                previousnote = tempval[0];
+                if (tempval.length == 3){
+                    for (inner = 0; inner < 2; inner ++){
+
+
+                        var distortion = context.createWaveShaper();
+                        distortion.curve = makeDistortionCurve(100);
+                        distortion.oversample = '4x';
+                        var nodes = {};
+                        nodes.filter = context.createBiquadFilter();
+                        nodes.convolver = context.createConvolver();
+                        nodes.volume = context.createGain();
+                        nodes.panner = context.createPanner();
+                        // var gainNode = context.createGain();
+                        var oscillator = context.createOscillator();
+                        // console.log(Math.floor(Math.random()*curmajorminor.length));
+                        
+                        // console.log("whatwhatwhat");
+                        console.log(tempval);
+
+                        oscillator.frequency.value = tempval[1];
+                        nodes.panner.setVelocity(-5, -5, -5);
+                        // oscillator..value = 50;
+                        oscillator.type = "sine";
+                        // var biquadFilter = context.createBiquadFilter();
+                        oscillator.connect(nodes.filter);
+                        oscillator.connect(compressor);
+                        oscillator.connect(distortion);
+                        nodes.filter.type = "highpass";
+                        nodes.filter.frequency.value = oscillator.frequency.value+5;
+                        oscillator.connect(nodes.convolver);
+                        oscillator.connect(nodes.filter);
+                        oscillator.connect(nodes.panner);
+
+                        nodes.volume.gain.value = 0.40;
+                        nodes.filter.connect(nodes.volume);
+                        // biquadFilter.connect(gainNode);
+                        // biquadFilter.type = "lowshelf";
+                        // biquadFilter.frequency.value = 100;
+                        // biquadFilter.gain.value = 30;                 
+                        nodes.volume.connect(context.destination);
+                        
+                        var scheduledTime = quickness*((repeat * 24) +(8*j+2*v+inner)/8).toFixed(5);
+                        // console.log('time: ' + scheduledTime);
+                        oscillator.start(scheduledTime);
+                        // console.log(scheduledTime);
+                        window.sequencer.play(scheduledTime);
+                        // gainNode = context.createGainNode();
+                        // gainNode.connect(context.destination);
+                        // oscillator.connect(gainNode);
+                        // Connect the oscillator to our speakers
+                        oscillator.stop(quickness*((repeat * 24) +(8*j+2*v+inner+0.7)/8).toFixed(5));
+                    }
+                    // break;
+                }
+                else{
+                    var distortion = context.createWaveShaper();
                 distortion.curve = makeDistortionCurve(100);
                 distortion.oversample = '4x';
                 var nodes = {};
@@ -182,11 +241,12 @@ function makeSound(context){
                 // var gainNode = context.createGain();
                 var oscillator = context.createOscillator();
                 // console.log(Math.floor(Math.random()*curmajorminor.length));
-                var tempval = returnNotes(curmajorminor[curmajmin], curchordprog[0][curmajmin]);
+                
                 // console.log("whatwhatwhat");
-                // console.log(tempval);
-                oscillator.frequency.value = tempval;
-                nodes.panner.setVelocity(0, 15, 15);
+                console.log(tempval);
+
+                oscillator.frequency.value = tempval[1];
+                nodes.panner.setVelocity(-5, -5, -5);
                 // oscillator..value = 50;
                 oscillator.type = "sine";
                 // var biquadFilter = context.createBiquadFilter();
@@ -218,6 +278,9 @@ function makeSound(context){
                 // Connect the oscillator to our speakers
                 oscillator.stop(quickness*((repeat * 24) +(4*j+v+0.7)/4).toFixed(5));
                 // break;
+                }
+                // break;
+                
             }
             j ++;
         }
@@ -240,7 +303,7 @@ function makeSound(context){
         
 }
 
-function returnNotes(major, starting){
+function returnNotes(major, starting, previous){
     if (major){
         notestopickfrom = majorscale;
     }
@@ -257,23 +320,104 @@ function returnNotes(major, starting){
 
         }
     }
-    values = Math.floor(Math.random()*(tempval.length*2+3));
-    if (values == 0){
-        return tempval[0];
+    weight = 0.15;
+    singordouble = Math.floor(Math.random()*5);
+    if (singordouble){
+        val01 = Math.random();
+        values = Math.floor(Math.random()*(tempval.length*2+3));
+        if (val01 < 0.4 * weight){
+            if (previous <= 0){
+                return [previous, tempval[previous]];
+            }
+            return [previous-1, tempval[previous-1]];
+        }
+        if (val01 < 0.8 * weight) {
+            if (previous >= tempval.length-1){
+                return [previous, tempval[previous]];
+            }
+            return [previous+1, tempval[previous+1]];
+        }
+        if (val01 < weight){
+            return [previous, tempval[previous]];
+        }
+        if (values == 0){
+            return [0, tempval[0]];
 
+        }
+        if (values == 1){
+            return [2, tempval[2]];
+
+        }
+        if (values == 2)
+        {
+            return [4, tempval[4]];
+
+        }
+
+        return [(values - 3)%tempval.length, tempval[(values - 3)%tempval.length]];    
     }
-    if (values == 1){
-        return tempval[2];
+    else{
+        val01 = Math.random();
+        val02 = Math.random();
+        if (val02 > 0.5){
+            toincdec = 1;
+        }
+        else{
+            toincdec = -1;
+        }
+        values = Math.floor(Math.random()*(tempval.length*2+3));
+        values2 = Math.floor(Math.random()*(tempval.length*2+3));
+        if (val01 < 0.4 * weight){
+            if (previous <= 0){
+                return [previous + 1, tempval[previous], tempval[previous+1]];
+            }
+            if (previous -1 ==0){
+                return [previous-1, tempval[previous], tempval[previous-1]];
 
+            }
+            return [previous-1+toincdec, tempval[previous-1], tempval[previous-1+toincdec]];
+        }
+        if (val01 < 0.8 * weight) {
+            if (previous >= tempval.length-1){
+                return [previous-1, tempval[previous], tempval[previous-1]];
+            }
+            if (previous+1 == tempval.length-1){
+                return [previous+1, tempval[previous], tempval[previous+1]];
+            }
+            return [previous+1+toincdec, tempval[previous+1], tempval[previous+1+toincdec]];
+        }
+        if (val01 < weight){
+            if (previous >= tempval.length-1){
+                return [previous-1, tempval[previous], tempval[previous-1]];    
+            }
+            if (previous <= 0){
+                return [previous +1, tempval[previous], tempval[previous+1]];
+            }
+            return [previous + toincdec, tempval[previous], tempval[previous+toincdec]];
+        }
+        if (values == 0){
+            return [1, tempval[0], tempval[1]];
+
+        }
+        if (values == 1){
+            return [3+toincdec, tempval[3], tempval[3+toincdec]];
+
+        }
+        if (values == 2)
+        {
+            return [5+toincdec, tempval[5], tempval[5+toincdec]];
+
+        }
+
+        retval = (values-3)%tempval.length;
+        if (retval ==0){
+            return [1, tempval[0], tempval[1]]; 
+        }
+        if (retval == tempval.length-1){
+            return [retval-1, tempval[retval], tempval[retval-1]];
+        }
+        return [retval+toincdec, tempval[retval], tempval[retval+toincdec]];
     }
-    if (values == 2)
-    {
-        return tempval[4];
-
-    }
-
-    return tempval[(values - 3)%tempval.length];
-    
 }
 
 function makeDistortionCurve(amount) {
@@ -306,16 +450,4 @@ function makeDistortionCurve(amount) {
 //     };
 //     timerWorker.postMessage({"interval":'start'});
 // }
-function async(fn, callback){
-    setTimeout(function(){
-        fn();
-        callback();
-    }, 0);
-}
-
-function run(){
-    async(makeSound(window.metadata.audioContext), function(){
-        console.log("worked")
-    });
-}
 
