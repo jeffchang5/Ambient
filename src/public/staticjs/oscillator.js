@@ -47,6 +47,7 @@ function coolStuff() {
 }
 
 function makeSound(){
+        window.director.start;
         var context = window.metadata.audioContext;
         
         
@@ -165,7 +166,7 @@ function makeSound(){
 
 
 
-                    distortion.curve = makeDistortionCurve(30);
+                    distortion.curve = makeDistortionCurve(0);
                     distortion.oversample = '4x';
                     var nodes = {};
                     nodes.filter = context.createBiquadFilter();
@@ -184,7 +185,7 @@ function makeSound(){
                     // var biquadFilter = context.createBiquadFilter();
                     oscillator.connect(nodes.filter);
                     oscillator.connect(compressor);
-                    // oscillator.connect(distortion);
+                    oscillator.connect(distortion);
                     nodes.filter.type = "highpass";
                     nodes.filter.frequency.value = oscillator.frequency.value+5;
                     oscillator.connect(nodes.convolver);
