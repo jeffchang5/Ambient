@@ -155,7 +155,11 @@ function makeSound(){
                 // biquadFilter.frequency.value = 100;
                 // biquadFilter.gain.value = 30;                 
                 nodes.volume.connect(context.destination);
+								
+								
+								
                 oscillator.start((quickness*(repeat * 24 +j)).toFixed(9));
+								// window.director.update();
                 // gainNode = context.createGainNode();
                 // gainNode.connect(context.destination);
                 // oscillator.connect(gainNode);
@@ -199,22 +203,34 @@ function makeSound(){
                         // oscillator..value = 50;
                         oscillator.type = "sine";
                         // var biquadFilter = context.createBiquadFilter();
-                        oscillator.connect(nodes.filter);
-                        oscillator.connect(compressor);
+                      //  oscillator.connect(nodes.filter);
+                    //    oscillator.connect(compressor);
+												
                         oscillator.connect(distortion);
-                        nodes.filter.type = "highpass";
-                        nodes.filter.frequency.value = oscillator.frequency.value+5;
+													
+													//also give dry signal
+													var volume2 = context.createGain();
+	                        volume2.gain.value= .2;
+													
+													oscillator.connect(volume2);
+													volume2.connect(context.destination);
+												
+                        //nodes.filter.type = "highpass";
+                      //  nodes.filter.frequency.value = oscillator.frequency.value+5;
                         oscillator.connect(nodes.convolver);
-                        oscillator.connect(nodes.filter);
-                        oscillator.connect(nodes.panner);
+                      // /  oscillator.connect(nodes.filter);
+                      //  oscillator.connect(nodes.panner);
 
-                        nodes.volume.gain.value = 0.40;
-                        nodes.filter.connect(nodes.volume);
+                        nodes.volume.gain.value = 0.2;
+                      //  nodes.filter.connect(nodes.volume);
+												
+												nodes.panner.connect(nodes.volume);
                         // biquadFilter.connect(gainNode);
                         // biquadFilter.type = "lowshelf";
                         // biquadFilter.frequency.value = 100;
                         // biquadFilter.gain.value = 30;                 
                         nodes.volume.connect(context.destination);
+												
                         
                         var scheduledTime = quickness*((repeat * 24) +(8*j+2*v+inner)/8).toFixed(5);
                         // console.log('time: ' + scheduledTime);
@@ -253,11 +269,15 @@ function makeSound(){
                 oscillator.connect(nodes.filter);
                 oscillator.connect(compressor);
                 oscillator.connect(distortion);
+								;
                 nodes.filter.type = "highpass";
                 nodes.filter.frequency.value = oscillator.frequency.value+5;
-                oscillator.connect(nodes.convolver);
-                oscillator.connect(nodes.filter);
-                oscillator.connect(nodes.panner);
+								
+								//dont care
+                	oscillator.connect(nodes.convolver);
+                	oscillator.connect(nodes.filter);
+                distortion.connect(nodes.panner);
+								nodes.panner.connect(context.destination);
 
                 nodes.volume.gain.value = 0.40;
                 nodes.filter.connect(nodes.volume);

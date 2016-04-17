@@ -7,18 +7,18 @@ var Director = function() {
     return Math.random() * (max-min) + min;
   }
   
-  this.changeRhythm = function() {
-      
-    
-      this.changeRhythmNotes();
-      setTimeout(self.changeRhythm, self.randomInterval(2000, 15000));
-  }
+
   
   this.changeRhythmNotes = function() {
     var x = Math.floor( Math.random() * window.metadata.sequence.length);
     var y = Math.floor(Math.random() * window.metadata.sequence[x].length);
     console.log('changing shit up '+ x + ', ' + y);
     window.metadata.sequence[x][y] = !window.metadata.sequence[x][y];
+  }
+  
+  this.changeRhythm = function() {
+      self.changeRhythmNotes();
+      setTimeout(self.changeRhythm, self.randomInterval(2000, 15000));
   }
   
   this.changeNoise = function() {
