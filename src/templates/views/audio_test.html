@@ -1,0 +1,18 @@
+---
+layout: default-layout
+---
+
+<script src="/public/staticjs/oscillator.js"></script>
+
+
+<h1>Welcome to the Web Audio API</h1>
+<button id="soundclick"> MUSIC </button>
+<script type = "text/javascript">
+    var soundElement = document.getElementById('soundclick');
+    soundElement.addEventListener('click',function() {
+        var mSound = new Sound();
+        mSound.makeSound();
+    });
+</script>
+<canvas id="mycanvas" />
+
