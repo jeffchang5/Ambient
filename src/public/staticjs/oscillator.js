@@ -81,11 +81,11 @@ var render = function () {
         var k = 0;
         for(var i = 0; i < cyl.length; i++) {
             for(var j = 0; j < cyl[i].length; j++) {
-                var scale = (array[k] + boost) / 30;
+                var scale = (array[k] + boost) / 100;
                 if (scale <= cyl[i][j].scale.y) scale = scale;
                 cyl[i][j].scale.y = (scale < 1 ? 1 : scale);
                 cyl[i][j].scale.z = -scale ;
-                cyl[i][j].scale.x = 25/scale; //(scale < 1 ? 1 : scale);
+                cyl[i][j].scale.x = scale; //(scale < 1 ? 1 : scale);
 
                 k += (k < array.length ? 1 : 0);
             }
